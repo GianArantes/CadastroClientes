@@ -1,0 +1,214 @@
+<!--
+  ARQUIVO: cliente-form.html
+  DESCRIÇÃO: Template do formulário para cadastro/edição de clientes
+
+  FUNCIONALIDADES:
+  1. Formulário reativo (Reactive Forms Angular)
+  2. Validação de campos
+  3. Mensagens de erro dinâmicas
+  4. Dois modos:
+     - NOVO: Formulário vazio, botão "Cadastrar"
+     - EDIÇÃO: Formulário preenchido, botão "Alterar"
+
+  TECNOLOGIAS:
+  - [formGroup] = vincula o FormGroup do componente
+  - formControlName = vincula cada campo do formulário
+  - @if = nova sintaxe do Angular 21 (substituiu *ngIf)
+-->
+
+<!-- Título dinâmico (muda conforme o modo) -->
+<h2>{{ btnText() === 'Alterar' ? 'Editar cliente' : 'Novo cliente' }}</h2>
+
+<!-- Link para voltar à lista de clientes -->
+<a class="voltar" href="javascript:void(0)" onclick="history.back()">Voltar</a>
+
+<!--
+  FORMULÁRIO REATIVO
+  [formGroup]="clienteForm" = vincula este form ao FormGroup do componente
+  (ngSubmit)="submit()" = chama métod submit() ao clicar no botão
+  #formDir="ngForm" = referência do template (não usada aqui, mas útil para debug)
+-->
+<form action="" (ngSubmit)="submit()" [formGroup]="clienteForm" #formDir="ngForm">
+  <div class="form-group">
+
+    <!--
+      CAMPO OCULTO: ID do cliente
+      Usado internamente para saber se é novo (vazio) ou edição (preenchido)
+      type="hidden" = não aparece no formulário
+    -->
+    <input type="hidden" formControlName="id">
+
+    <!--
+      MENSAGEM DE ERRO GERAL
+      Mostra quando formulmário está inválido e usuário tentou enviar
+      !camposPreenchidos() = se sinal camposPreenchidos é false
+      Nova sintaxe @if do Angular 21
+    -->
+    @if (!camposPreenchidos()) {
+    <div class="validation-error">
+      <p>Preencha todas as informações para continuar.</p>
+    </div>
+    }
+
+    <!--
+      CAMPO 1: RAZÃO SOCIAL
+      formControlName="razaoSocial" = vincula ao controle razaoSocial do FormGroup
+      required = validação HTML (obrigatório)
+    -->
+    <label for="razaoSocial">Razão Social</label>
+    <input
+      type="text"
+      id="razaoSocial"
+      name="razaoSocial"
+      formControlName="razaoSocial"
+      placeholder="Digite a razão social"
+      required
+    >
+
+    <!--
+      MENSAGEM DE ERRO ESPECÍFICA
+      razaoSocial?.invalid = se o campo tem erro de validação
+      razaoSocial?.touched = se usuário já interagiu com o campo
+
+      Mostra erro APENAS se:
+      1. Campo foi tocado (evita erros desnecessários antes de digitar)
+      2. Campo é inválido (não atende validadores)
+
+      hasError('required') = verifica tipo específico de erro
+    -->
+    @if (razaoSocial?.invalid && razaoSocial?.touched) {
+    <div class="validation-error">
+      @if (razaoSocial?.hasError('required')) {
+      <p>Razão social é obrigatória.</p>
+      }
+    </div>
+    }
+
+    <!--
+      CAMPO 2: NOME FANTASIA
+      Mesmo padrão do anterior
+    -->
+    <label for="nomeFantasia">Nome Fantasia</label>
+    <input
+      type="text"
+      id="nomeFantasia"
+      name="nomeFantasia"
+      formControlName="nomeFantasia"
+      placeholder="Digite o nome fantasia"
+      required
+    >
+
+    @if (nomeFantasia?.invalid && nomeFantasia?.touched) {
+    <div class="validation-error">
+      @if (nomeFantasia?.hasError('required')) {
+      <p>Nome fantasia é obrigatório.</p>
+      }
+    </div>
+    }
+
+    <!--
+      CAMPO 3: CNPJ
+      Aguarda validação de formato (não implementada, mas pode ser adicionada)
+    -->
+    <label for="cnpj">CNPJ</label>
+    <input
+      type="text"
+      id="cnpj"
+      name="cnpj"
+      formControlName="cnpj"
+      placeholder="Digite o CNPJ"
+      required
+    >
+
+    @if (cnpj?.invalid && cnpj?.touched) {
+    <div class="validation-error">
+      @if (cnpj?.hasError('required')) {
+      <p>CNPJ é obrigatório.</p>
+      }
+    </div>
+    }
+
+    <!--
+      CAMPO 4: ENDEREÇO
+    -->
+    <label for="endereco">Endereço</label>
+    <input
+      type="text"
+      id="endereco"
+      name="endereco"
+      formControlName="endereco"
+      placeholder="Digite o endereço completo"
+      required
+    >
+
+    @if (endereco?.invalid && endereco?.touched) {
+    <div class="validation-error">
+      @if (endereco?.hasError('required')) {
+      <p>Endereço é obrigatório.</p>
+      }
+    </div>
+    }
+
+    <!--
+      CAMPO 5: EMAIL
+      type="email" = validação HTML de email
+      Também tem validador Angular: Validators.email
+    -->
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      formControlName="email"
+      placeholder="Digite o email"
+      required
+    >
+
+    @if (email?.invalid && email?.touched) {
+    <div class="validation-error">
+      @if (email?.hasError('required')) {
+      <p>Email é obrigatório.</p>
+      }
+      @if (email?.hasError('email')) {
+      <p>Email inválido. Use formato: user@example.com</p>
+      }
+    </div>
+    }
+
+    <!--
+      CAMPO 6: TELEFONE
+    -->
+    <label for="telefone">Telefone</label>
+    <input
+      type="text"
+      id="telefone"
+      name="telefone"
+      formControlName="telefone"
+      placeholder="Digite o telefone"
+      required
+    >
+
+    @if (telefone?.invalid && telefone?.touched) {
+    <div class="validation-error">
+      @if (telefone?.hasError('required')) {
+      <p>Telefone é obrigatório.</p>
+      }
+    </div>
+    }
+
+    <!--
+      BOTÃO DE ENVIO
+      [value]="btnText()" = texto muda (Cadastrar vs Alterar)
+      [disabled]="isLoading()" = desabilita durante requisição
+      class="btn btn-primary mt-3" = estilos Bootstrap
+      type="submit" = dispara (ngSubmit)="submit()"
+    -->
+    <input
+      type="submit"
+      [value]="btnText()"
+      [disabled]="isLoading()"
+      class="btn btn-primary mt-3"
+    >
+  </div>
+</form>
+

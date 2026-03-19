@@ -1,0 +1,117 @@
+<!--
+  ARQUIVO: client-comp.html
+  DESCRIÇÃO: Template da lista de clientes
+
+  SEÇÕES:
+  1. Título e botão "Novo Cliente"
+  2. Campo de busca/filtro
+  3. Tabela com lista de clientes
+     - Listar todos
+     - Opções de editar/deletar em cada linha
+-->
+
+<!-- Título da página -->
+<h2>Clientes</h2>
+
+<!--
+  Botão "Cadastrar Novo Cliente"
+  routerLink="/cliente/novo" = vai para URL /cliente/novo
+  [state] = passa dados extras (neste caso, o texto do botão 'Cadastrar')
+  class="addClient" = estilo CSS customizado
+-->
+<a class="addClient" [state]="{ btnText: 'Cadastrar' }" routerLink="/cliente/novo">
+  Cadastrar Novo Cliente
+</a>
+
+<!--
+  SEÇÃO DE BUSCA/FILTRO
+  Campo de input para filtrar clientes enquanto digita
+  (input)="search($event)" = chamada ao método search() a cada digitação
+-->
+<div class="search-box">
+  <label for="text">Buscar cliente:</label>
+  <input type="text" placeholder="Buscar por Razão Social, Nome Fantasia ou CNPJ..." (input)="search($event)"
+    class="form-control">
+</div>
+
+<!--
+  TABELA DE CLIENTES
+  Exibe lista filtrada em forma de tabela
+-->
+<div>
+  <table>
+    <!-- Cabeçalho da tabela -->
+    <thead>
+      <tr>
+        <th>Razão Social</th>
+        <th>Nome Fantasia</th>
+        <th>CNPJ</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <!-- Corpo da tabela -->
+    <tbody>
+      <!--
+        @for = nova sintaxe Angular 21 para iteração (substituiu *ngFor)
+        Parâmetro 1: cliente of clienteListaFiltrado()
+          - cliente = item atual da iteração
+          - clienteListaFiltrado() = array de clientes (signal)
+
+        Parâmetro 2: track cliente.id
+          - Rastreamento por ID único (melhora performance)
+          - Evita re-renderizações desnecessárias
+      -->
+      @for (cliente of clienteListaFiltrado(); track cliente.id) {
+      <!-- Linha da tabela para cada cliente -->
+      <tr>
+        <!-- Telefone {{ cliente.razaoSocial }}Exibe a Razão Social da empresa -->
+        <td>{{ cliente.razaoSocial }}</td>
+
+        <!-- Exibe o Nome Fantasia (nome comercial) -->
+        <td>{{ cliente.nomeFantasia }}</td>
+
+        <!-- Exibe o CNPJ (cadastro fiscal) -->
+        <td>{{ cliente.cnpj }}</td>
+
+        <!-- Coluna de ações: Editar e Deletar -->
+        <td>
+          <!--
+              Link "Alterar"
+              routerLink="/cliente/{{ cliente.id }}" = vai para formulário de edição
+              Interpolação {{ cliente.id }} = insere o ID na URL
+              Exemplo: /cliente/550e8400-e29b-41d4-a716-446655440000
+            -->
+          <a routerLink="/cliente/{{ cliente.id }}">Alterar</a>
+
+          <!-- Separador entre ações -->
+          /
+
+          <!--
+              Link "Excluir"
+              (click)="excluirCliente(cliente.id)" = chama método ao clicar
+              style="cursor: pointer; color: red;" = indica ação de risco (cor vermelha)
+              Comportamento: exibe confirmação antes de deletar
+            -->
+          <a (click)="excluirCliente(cliente.id)" style="cursor: pointer; color: red;">
+            Excluir
+          </a>
+        </td>
+      </tr>
+      }
+
+      <!--
+        @empty = bloco que renderiza quando o array está vazio
+        Novo sintaxe Angular 21 (substituiu *ngIf com else)
+      -->
+      @empty {
+      <!-- Mensagem quando nenhum cliente é encontrado -->
+      <tr>
+        <td colspan="4" style="text-align: center;">
+          Nenhum cliente encontrado.
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

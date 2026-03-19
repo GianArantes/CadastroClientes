@@ -1,0 +1,47 @@
+h2 {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 2.2em;
+}
+
+/* Tabela Geral */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Remove espaçamento entre bordas */
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilo para cabeçalho e células */
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+
+}
+
+/* Estilo apenas para o cabeçalho */
+table th {
+  background-color: #0018a3;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Efeito ao passar o mouse */
+table tr:hover {
+  background-color: #ddd;
+}
+
+.addClient {
+  display: block;
+  text-align: right;
+  margin-bottom: 10px;
+}
+.addClient:hover {
+  text-decoration: underline;
+
+}
