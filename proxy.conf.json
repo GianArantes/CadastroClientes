@@ -1,0 +1,11 @@
+{
+  "/api/cnpj/*": {
+    "target": "https://receitaws.com.br",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "info",
+    "pathRewrite": {
+      "^/api/cnpj": "/v1/cnpj"
+    }
+  }
+}

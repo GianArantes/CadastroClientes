@@ -53,6 +53,28 @@ export interface Cliente {
   cnpj: string;
 
   /**
+   * ie: string
+   *
+   * Inscrição Estadual (registro fiscal estadual)
+   * Formato: 8-14 dígitos (varia por estado)
+   * Exemplo: '123456789'
+   * Obrigatório: SIM
+   * Validação: apenas números, 8-14 dígitos
+   */
+  ie: string;
+
+  /**
+   * abertura: string
+   *
+   * Data de abertura/fundação da empresa
+   * Formato: YYYY-MM-DD (formato ISO para input type="date")
+   * Exemplo: '2000-01-15'
+   * Obrigatório: SIM
+   * Validação: data válida
+   */
+  abertura: string;
+
+  /**
    * endereco: string
    *
    * Endereço completo do cliente (rua, número, complemento, etc)

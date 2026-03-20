@@ -37,6 +37,7 @@ export class ClienteService {
    * - Facilita deploy em diferentes servidores
    */
   private baseApiUrl = environment.baseApiUrl;
+  private cnpjApiUrl = '/api/cnpj';
 
   /**
    * apiUrl: string
@@ -102,6 +103,11 @@ export class ClienteService {
     return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
   }
 
+  getCnpjInfo(cnpj: string): Observable<any> {
+    return this.http.get<any>(`${this.cnpjApiUrl}/${cnpj}`);
+  }
+
+
   /**
    * addCliente(cliente: Cliente)
    *
@@ -132,7 +138,7 @@ export class ClienteService {
    * });
    */
   addCliente(cliente: Cliente): Observable<Cliente> {
-    return this.http.post<Cliente>(`${this.apiUrl}/cadastrar`, cliente);
+    return this.http.post<Cliente>(`${this.apiUrl}`, cliente);
   }
 
   /**

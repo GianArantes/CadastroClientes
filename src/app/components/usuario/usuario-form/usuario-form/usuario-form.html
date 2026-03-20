@@ -1,0 +1,109 @@
+<h2>{{ btnText() === 'Alterar' ? 'Editar usuário' : 'Novo usuário' }}</h2>
+<a class="voltar" href="javascript:void(0)" onclick="history.back()">Voltar</a>
+<form action="" (ngSubmit)="submit()" [formGroup]="usuarioForm" #formDir="ngForm">
+  <div class="form-group">
+    <input type="hidden" formControlName="id">
+
+    @if (!camposPreenchidos()) {
+    <div class="validation-error">
+      <p>Preencha todas as informações para continuar.</p>
+    </div>
+    }
+
+
+    <label for="nomeCompleto">Nome Completo</label>
+    <input type="text" id="nomeCompleto" name="nomeCompleto" formControlName="nomeCompleto"
+      placeholder="Digite o nome completo" required>
+
+    @if (nomeCompleto?.invalid && nomeCompleto?.touched) {
+    <div class="validation-error">
+      @if (nomeCompleto?.hasError('required')) {
+      <p>Nome completo é obrigatório.</p>
+      }
+      @if (nomeCompleto?.hasError('serverError')) {
+      <p>{{ nomeCompleto?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+
+    <label for="apelido">Apelido</label>
+    <input type="text" id="apelido" name="apelido" formControlName="apelido" placeholder="Digite o apelido" required>
+
+    @if (apelido?.invalid && apelido?.touched) {
+    <div class="validation-error">
+      @if (apelido?.hasError('required')) {
+      <p>Apelido é obrigatório.</p>
+      }
+      @if (apelido?.hasError('serverError')) {
+      <p>{{ apelido?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" formControlName="email" placeholder="Digite o email" required>
+    @if (email?.invalid && email?.touched) {
+    <div class="validation-error">
+      @if (email?.hasError('required')) {
+      <p>Email é obrigatório.</p>
+      }
+      @if (email?.hasError('serverError')) {
+      <p>{{ email?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+
+    <label for="senha">Senha</label>
+    <input type="password" id="senha" name="senha" formControlName="senha" placeholder="Digite a senha" required>
+
+
+
+    @if (senha?.invalid && senha?.touched) {
+    <div class="validation-error">
+      @if (senha?.hasError('required')) {
+      <p>Senha é obrigatória.</p>
+      }
+      @if (senha?.hasError('minlength')) {
+      <p>Senha deve ter pelo menos 8 caracteres.</p>
+      }
+      @if (senha?.hasError('pattern')) {
+      <p>Senha deve conter pelo menos uma letra maiúscula e um número.</p>
+      }
+      @if (senha?.hasError('serverError')) {
+      <p>{{ senha?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+    <label for="senhaConfirm">Confirmar Senha</label>
+    <input type="password" id="senhaConfirm" name="senhaConfirm" formControlName="senhaConfirm"
+      placeholder="Digite a senha novamente" required>
+    @if (usuarioForm.get('senhaConfirm')?.touched && usuarioForm.hasError('passwordMismatch')) {
+    <div class="validation-error">
+      <p>As senhas não coincidem.</p>
+    </div>
+    }
+
+
+
+    <label for="telefone">Telefone</label>
+    <input type="text" id="telefone" name="telefone" formControlName="telefone" placeholder="Digite o telefone" inputmode="numeric" pattern="[0-9]*" (paste)="tratarPaste($event, 'telefone')" (beforeinput)="apenasNumeros($event)" required>
+
+
+    @if (telefone?.invalid && telefone?.touched) {
+    <div class="validation-error">
+      @if (telefone?.hasError('required')) {
+      <p>Telefone é obrigatório.</p>
+      }
+      @if (telefone?.hasError('serverError')) {
+      <p>{{ telefone?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+    <input type="submit" [value]="btnText()" [disabled]="isLoading()" class="btn btn-primary mt-3">
+  </div>
+
+</form>

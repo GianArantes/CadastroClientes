@@ -3,6 +3,8 @@ import { Home } from './components/pages/home/home';
 import { About } from './components/pages/about/about';
 import { ClienteForm } from './components/cliente/cliente-form/cliente-form';
 import { ClientComp } from './components/cliente/client-comp/client-comp';
+import { UsuarioComp } from './components/usuario/usuario-comp/usuario-comp';
+import { UsuarioForm } from './components/usuario/usuario-form/usuario-form/usuario-form';
 
 /**
  * ARQUIVO: app.routes.ts
@@ -64,5 +66,17 @@ export const routes: Routes = [
        */
       { path: ':id', component: ClienteForm }
     ]
+  },
+  {
+    path: 'usuario',
+    children: [
+      { path: '', component: UsuarioComp },
+      { path: 'novo', component: UsuarioForm },
+      { path: ':id', component: UsuarioForm }
+    ]
   }
+
+
+
+
 ];

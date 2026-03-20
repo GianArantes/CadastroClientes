@@ -1,0 +1,67 @@
+<h2>Usuários</h2>
+<a class="add" [state]="{ btnText: 'Cadastrar' }" routerLink="/usuario/novo">
+  Cadastrar Novo Usuário
+</a>
+
+
+<div class="search-box">
+  <label for="text">Buscar usuário:</label>
+  <input type="text" placeholder="Buscar por Nome, apelido ou email..." (input)="search($event)"
+    class="form-control">
+</div>
+
+
+<div>
+  <table>
+    <!-- Cabeçalho da tabela -->
+    <thead>
+      <tr>
+        <th>Nome Completo</th>
+        <th>Apelido</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <!-- Corpo da tabela -->
+    <tbody>
+
+      @for (usuario of usuarioListaFiltrado(); track usuario.id) {
+      <!-- Linha da tabela para cada usuário -->
+      <tr>
+        <!-- Nome Completo -->
+        <td>{{ usuario.nomeCompleto }}</td>
+
+        <!-- Exibe o Apelido -->
+        <td>{{ usuario.apelido }}</td>
+
+        <!-- Exibe o Email -->
+        <td>{{ usuario.email }}</td>
+
+        <!-- Coluna de ações: Editar e Deletar -->
+        <td>
+
+          <a routerLink="/usuario/{{ usuario.id }}">Alterar</a>
+
+          <!-- Separador entre ações -->
+          /
+
+          <a (click)="excluirUsuario(usuario.id)" style="cursor: pointer; color: red;">
+            Excluir
+          </a>
+        </td>
+      </tr>
+      }
+
+
+      @empty {
+
+      <tr>
+        <td colspan="4" style="text-align: center;">
+          Nenhum usuário encontrado.
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

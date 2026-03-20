@@ -44,11 +44,83 @@
       !camposPreenchidos() = se sinal camposPreenchidos é false
       Nova sintaxe @if do Angular 21
     -->
-    @if (!camposPreenchidos()) {
+    <!-- @if (!camposPreenchidos()) {
     <div class="validation-error">
       <p>Preencha todas as informações para continuar.</p>
     </div>
     }
+
+    @if (mensagemErroGlobal()) {
+    <div class="alert alert-danger"
+      style="background: #fee2e2; color: #b91c1c; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
+      <strong>Erro:</strong> {{ mensagemErroGlobal() }}
+    </div>
+    } -->
+
+    <!--
+      CAMPO 3: CNPJ
+      Aguarda validação de formato (não implementada, mas foi adicionada validação manual)
+      Botão ao lado para buscar dados via API de CNPJ
+    -->
+    <label for="cnpj">CNPJ</label>
+    <div class="cnpj-busca-container">
+      <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" placeholder="Digite o CNPJ" inputmode="numeric"
+        pattern="[0-9]*" (paste)="tratarPaste($event, 'cnpj')" (beforeinput)="apenasNumeros($event)" required>
+      <button type="button" (click)="buscarCnpj()" [disabled]="isLoading()" class="btn btn-secondary">Buscar
+        CNPJ</button>
+    </div>
+
+    @if (cnpj?.invalid && cnpj?.touched) {
+    <div class="validation-error">
+      @if (cnpj?.hasError('required')) {
+      <p>CNPJ é obrigatório.</p>
+      }
+      @if (cnpj?.hasError('cnpjInvalid')) {
+      <p>CNPJ deve conter 14 dígitos numéricos.</p>
+      }
+      @if (cnpj?.hasError('serverError')) {
+      <p>{{ cnpj?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+    <div class="ieFundacao">
+      <div class="ieContainer">
+        <label for="ie">Inscrição Estadual</label>
+        <input type="text" id="ie" name="ie" formControlName="ie" placeholder="Digite a Inscrição Estadual"
+          inputmode="numeric" pattern="[0-9]*" (paste)="tratarPaste($event, 'ie')" (beforeinput)="apenasNumeros($event)"
+          required>
+
+        <div class="validation-error">
+          @if (ie?.hasError('ieInvalid')) {
+          <p>Inscrição Estadual deve conter 2 a 20 dígitos numéricos.</p>
+          }
+          @if (ie?.hasError('serverError')) {
+          <p>{{ ie?.getError('serverError') }}</p>
+          }
+        </div>
+
+      </div>
+      <div class="aberturaContainer">
+        <label for="abertura">Data de Abertura</label>
+        <input type="date" id="abertura" name="abertura" formControlName="abertura" required
+          (blur)="abertura?.markAsTouched()">
+
+
+        @if (abertura?.invalid && abertura?.touched) {
+        <div class="validation-error">
+          @if (abertura?.hasError('required')) {
+          <p>Data de abertura é obrigatória.</p>
+          }
+          @if (abertura?.hasError('invalidDate')) {
+          <p>Data de abertura inválida.</p>
+          }
+          @if (abertura?.hasError('serverError')) {
+          <p>{{ abertura?.getError('serverError') }}</p>
+          }
+        </div>
+        }
+      </div>
+    </div>
 
     <!--
       CAMPO 1: RAZÃO SOCIAL
@@ -56,14 +128,8 @@
       required = validação HTML (obrigatório)
     -->
     <label for="razaoSocial">Razão Social</label>
-    <input
-      type="text"
-      id="razaoSocial"
-      name="razaoSocial"
-      formControlName="razaoSocial"
-      placeholder="Digite a razão social"
-      required
-    >
+    <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial"
+      placeholder="Digite a razão social" required>
 
     <!--
       MENSAGEM DE ERRO ESPECÍFICA
@@ -81,6 +147,9 @@
       @if (razaoSocial?.hasError('required')) {
       <p>Razão social é obrigatória.</p>
       }
+      @if (razaoSocial?.hasError('serverError')) {
+      <p>{{ razaoSocial?.getError('serverError') }}</p>
+      }
     </div>
     }
 
@@ -89,62 +158,39 @@
       Mesmo padrão do anterior
     -->
     <label for="nomeFantasia">Nome Fantasia</label>
-    <input
-      type="text"
-      id="nomeFantasia"
-      name="nomeFantasia"
-      formControlName="nomeFantasia"
-      placeholder="Digite o nome fantasia"
-      required
-    >
+    <input type="text" id="nomeFantasia" name="nomeFantasia" formControlName="nomeFantasia"
+      placeholder="Digite o nome fantasia" required>
 
     @if (nomeFantasia?.invalid && nomeFantasia?.touched) {
     <div class="validation-error">
       @if (nomeFantasia?.hasError('required')) {
       <p>Nome fantasia é obrigatório.</p>
       }
-    </div>
-    }
-
-    <!--
-      CAMPO 3: CNPJ
-      Aguarda validação de formato (não implementada, mas pode ser adicionada)
-    -->
-    <label for="cnpj">CNPJ</label>
-    <input
-      type="text"
-      id="cnpj"
-      name="cnpj"
-      formControlName="cnpj"
-      placeholder="Digite o CNPJ"
-      required
-    >
-
-    @if (cnpj?.invalid && cnpj?.touched) {
-    <div class="validation-error">
-      @if (cnpj?.hasError('required')) {
-      <p>CNPJ é obrigatório.</p>
+      @if (nomeFantasia?.hasError('serverError')) {
+      <p>{{ nomeFantasia?.getError('serverError') }}</p>
       }
     </div>
     }
+
+
+
+
+
 
     <!--
       CAMPO 4: ENDEREÇO
     -->
     <label for="endereco">Endereço</label>
-    <input
-      type="text"
-      id="endereco"
-      name="endereco"
-      formControlName="endereco"
-      placeholder="Digite o endereço completo"
-      required
-    >
+    <textarea id="endereco" name="endereco" formControlName="endereco" placeholder="Digite o endereço completo"
+      required></textarea>
 
     @if (endereco?.invalid && endereco?.touched) {
     <div class="validation-error">
       @if (endereco?.hasError('required')) {
       <p>Endereço é obrigatório.</p>
+      }
+      @if (endereco?.hasError('serverError')) {
+      <p>{{ endereco?.getError('serverError') }}</p>
       }
     </div>
     }
@@ -155,46 +201,35 @@
       Também tem validador Angular: Validators.email
     -->
     <label for="email">Email</label>
-    <input
-      type="email"
-      id="email"
-      name="email"
-      formControlName="email"
-      placeholder="Digite o email"
-      required
-    >
+    <input type="email" id="email" name="email" formControlName="email" placeholder="Digite o email" required>
 
-    @if (email?.invalid && email?.touched) {
+
     <div class="validation-error">
-      @if (email?.hasError('required')) {
-      <p>Email é obrigatório.</p>
-      }
+
       @if (email?.hasError('email')) {
       <p>Email inválido. Use formato: user@example.com</p>
       }
+      @if (email?.hasError('serverError')) {
+      <p>{{ email?.getError('serverError') }}</p>
+      }
     </div>
-    }
+
 
     <!--
       CAMPO 6: TELEFONE
     -->
     <label for="telefone">Telefone</label>
-    <input
-      type="text"
-      id="telefone"
-      name="telefone"
-      formControlName="telefone"
-      placeholder="Digite o telefone"
-      required
-    >
+    <input type="text" id="telefone" name="telefone" formControlName="telefone" placeholder="Digite o telefone"
+      inputmode="numeric" pattern="[0-9]*" (paste)="tratarPaste($event, 'telefone')"
+      (beforeinput)="apenasNumeros($event)" required>
 
-    @if (telefone?.invalid && telefone?.touched) {
+
     <div class="validation-error">
-      @if (telefone?.hasError('required')) {
-      <p>Telefone é obrigatório.</p>
+      @if (telefone?.hasError('serverError')) {
+      <p>{{ telefone?.getError('serverError') }}</p>
       }
     </div>
-    }
+
 
     <!--
       BOTÃO DE ENVIO
@@ -203,12 +238,6 @@
       class="btn btn-primary mt-3" = estilos Bootstrap
       type="submit" = dispara (ngSubmit)="submit()"
     -->
-    <input
-      type="submit"
-      [value]="btnText()"
-      [disabled]="isLoading()"
-      class="btn btn-primary mt-3"
-    >
+    <input type="submit" [value]="btnText()" [disabled]="isLoading()" class="btn btn-primary mt-3">
   </div>
 </form>
-
