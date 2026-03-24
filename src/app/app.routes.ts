@@ -5,6 +5,14 @@ import { ClienteForm } from './components/cliente/cliente-form/cliente-form';
 import { ClientComp } from './components/cliente/client-comp/client-comp';
 import { UsuarioComp } from './components/usuario/usuario-comp/usuario-comp';
 import { UsuarioForm } from './components/usuario/usuario-form/usuario-form/usuario-form';
+import { ProdutoComp } from './components/produto/produto-comp/produto-comp';
+import { ProdutoForm } from './components/produto/produto-form/produto-form';
+import { CategoriaComp } from './components/categoria/categoria-comp/categoria-comp';
+import { CategoriaForm } from './components/categoria/categoria-form/categoria-form';
+import { NcmComp } from './components/ncm/ncm-comp/ncm-comp';
+import { NcmForm } from './components/ncm/ncm-form/ncm-form';
+import { LitragemComp } from './components/litragem/litragem-comp/litragem-comp';
+import { LitragemForm } from './components/litragem/litragem-form/litragem-form';
 
 /**
  * ARQUIVO: app.routes.ts
@@ -73,6 +81,34 @@ export const routes: Routes = [
       { path: '', component: UsuarioComp },
       { path: 'novo', component: UsuarioForm },
       { path: ':id', component: UsuarioForm }
+    ]
+  }, {
+    path: 'produtos',
+    children: [
+      { path: '', component: ProdutoComp },
+      { path: 'novo', component: ProdutoForm },
+      { path: ':id', component: ProdutoForm }
+    ]
+  }, {
+    path: 'categorias',
+    children: [
+      { path: '', component: CategoriaComp },
+      { path: 'novo', component: CategoriaForm },
+      { path: ':id', component: CategoriaForm }
+    ]
+  }, {
+    path: 'ncms',
+    children: [
+      { path: '', component: NcmComp },
+      { path: 'novo', component: NcmForm },
+      { path: ':id', component: NcmForm }
+    ]
+  }, {
+    path: 'litragem',
+    children: [
+      { path: '', component: LitragemComp },
+      { path: 'novo', component: LitragemForm },
+      { path: ':id', component: LitragemForm }
     ]
   }
 

@@ -1,0 +1,78 @@
+<h2>{{ btnText() === 'Alterar' ? 'Editar produto' : 'Novo produto' }}</h2>
+<a class="voltar" href="javascript:void(0)" onclick="history.back()">Voltar</a>
+
+<form action="" (ngSubmit)="submit()" [formGroup]="produtoForm" #formDir="ngForm">
+  <div class="form-group">
+    <input type="hidden" formControlName="id">
+
+
+    <label for="nome">Nome</label>
+    <input type="text" id="nome" name="nome" formControlName="nome" placeholder="Digite o nome" required>
+    @if (nome?.invalid && nome?.touched) {
+    <div class="validation-error">
+      @if (nome?.hasError('required')) {
+      <p>Nome é obrigatório.</p>
+      }
+      @if (nome?.hasError('serverError')) {
+      <p>{{ nome?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+
+    <label for="refNf">Referência da Nota Fiscal</label>
+    <input type="text" id="refNf" name="refNf" formControlName="refNf" placeholder="Digite a referência" required>
+    @if (refNf?.invalid && refNf?.touched) {
+    <div class="validation-error">
+      @if (refNf?.hasError('required')) {
+      <p>Referência da Nota Fiscal é obrigatória.</p>
+      }
+      @if (refNf?.hasError('serverError')) {
+      <p>{{ refNf?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+
+    <label for="ipi">IPI</label>
+    <input type="text" id="ipi" name="ipi" formControlName="ipi" placeholder="Digite o IPI" required>
+    @if (ipi?.invalid && ipi?.touched) {
+    <div class="validation-error">
+      @if (ipi?.hasError('required')) {
+      <p>IPI é obrigatório.</p>
+      }
+      @if (ipi?.hasError('serverError')) {
+      <p>{{ ipi?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+    <label for="peso">Peso</label>
+    <input type="text" id="peso" name="peso" formControlName="peso" placeholder="Digite o peso" required>
+    @if (peso?.invalid && peso?.touched) {
+    <div class="validation-error">
+      @if (peso?.hasError('required')) {
+      <p>Peso é obrigatório.</p>
+      }
+      @if (peso?.hasError('serverError')) {
+      <p>{{ peso?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+    <label for="qtdadePorEmbalagem">Quantidade por Embalagem</label>
+    <input type="text" id="qtdadePorEmbalagem" name="qtdadePorEmbalagem" formControlName="qtdadePorEmbalagem" placeholder="Digite a quantidade por embalagem" required>
+    @if (qtdadePorEmbalagem?.invalid && qtdadePorEmbalagem?.touched) {
+    <div class="validation-error">
+      @if (qtdadePorEmbalagem?.hasError('required')) {
+      <p>Quantidade por Embalagem é obrigatória.</p>
+      }
+      @if (qtdadePorEmbalagem?.hasError('serverError')) {
+      <p>{{ qtdadePorEmbalagem?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+    <input type="submit" [value]="btnText()" [disabled]="isLoading()" class="btn btn-primary mt-3">
+  </div>
+</form>

@@ -3,6 +3,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '../../../../services/usuario-service';
+import { RoleUsuario, StatusUsuario } from '../../../../interface/Usuario';
 
 
 
@@ -33,8 +34,15 @@ export class UsuarioForm {
 
   usuarioForm!: FormGroup;
 
-
-
+  roles = [
+    { label: 'Administrador', value: 'ADMIN' },
+    { label: 'Representante', value: 'REPRESENTANTE' }
+  ];
+  statusUsuario = [
+    { label: 'Ativo', value: 'ATIVO' },
+    { label: 'Inativo', value: 'INATIVO' },
+    { label: 'Bloqueado', value: 'BLOQUEADO' }
+  ];
 
   constructor(
     private usuarioService: UsuarioService,
@@ -55,35 +63,16 @@ export class UsuarioForm {
       senha: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/(?=.*[A-Z])(?=.*[0-9])/)]),
       senhaConfirm: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/(?=.*[A-Z])(?=.*[0-9])/)]),
       telefone: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]),
+      role: new FormControl<RoleUsuario>('REPRESENTANTE', { nonNullable: true, validators: [Validators.required] }),
+      status: new FormControl<StatusUsuario>('ATIVO', { nonNullable: true, validators: [Validators.required] })
+
     }, {
       // IMPORTANTE: O validador vai aqui, nas opções do grupo!
       validators: passwordMatchValidator
     });
   }
 
-  apenasNumeros(event: InputEvent): void {
-    const data = event.data; // Pega o caractere que está tentando entrar
-
-    // Se não for número, cancela o evento
-    if (data && !/^\d+$/.test(data)) {
-      event.preventDefault();
-    }
-  }
-
-    tratarPaste(event: ClipboardEvent, campo: string): void {
-    event.preventDefault();
-
-    // Pega o texto da área de transferência
-    const colarTexto = event.clipboardData?.getData('text') || '';
-
-    // Limpa tudo que não é número
-    const apenasNumeros = colarTexto.replace(/\D/g, '');
-
-    // Atualiza o campo específico que chamou a função
-    this.usuarioForm.get(campo)?.patchValue(apenasNumeros);
-  }
-
-  private verificarEdicao(): void {
+    private verificarEdicao(): void {
     this.route.params.subscribe(params => {
       const id = params['id'];
 
@@ -98,10 +87,37 @@ export class UsuarioForm {
       }
     });
   }
+
+  apenasNumeros(event: InputEvent): void {
+    const data = event.data; // Pega o caractere que está tentando entrar
+
+    // Se não for número, cancela o evento
+    if (data && !/^\d+$/.test(data)) {
+      event.preventDefault();
+    }
+  }
+
+  tratarPaste(event: ClipboardEvent, campo: string): void {
+    event.preventDefault();
+
+    // Pega o texto da área de transferência
+    const colarTexto = event.clipboardData?.getData('text') || '';
+
+    // Limpa tudo que não é número
+    const apenasNumeros = colarTexto.replace(/\D/g, '');
+
+    // Atualiza o campo específico que chamou a função
+    this.usuarioForm.get(campo)?.patchValue(apenasNumeros);
+  }
+
+
   private carregarUsuario(id: string): void {
     this.isLoading.set(true);
     this.usuarioService.getUsuario(id).subscribe({
       next: (usuario) => {
+
+        const funcaoDefinida = usuario.role ?? 'REPRESENTANTE';
+        usuario.role = funcaoDefinida;
         // Sucesso: preencheu os dados
         this.usuarioForm.patchValue(usuario);
         this.isLoading.set(false);
@@ -118,6 +134,7 @@ export class UsuarioForm {
     });
   }
   submit(): void {
+    console.log('Payload para o Java:', this.usuarioForm.value);
     this.formSubmitted.set(true);
     if (!this.usuarioForm.valid) {
       this.camposPreenchidos.set(false);
@@ -140,12 +157,7 @@ export class UsuarioForm {
         // Redireciona para lista de usuarios
         this.router.navigate(['/usuario']);
       },
-      // error: (err) => {
-      //   // Erro na requisição
-      //   console.error('Erro ao salvar:', err);
-      //   this.isLoading.set(false);
-      //   alert('Erro ao salvar usuário');
-      // }
+
       error: (err) => {
         console.error('Erro ao salvar:', err);
         this.isLoading.set(false);
@@ -188,5 +200,13 @@ export class UsuarioForm {
 
   get telefone() {
     return this.usuarioForm.get('telefone');
+  }
+
+  get role() {
+    return this.usuarioForm.get('role');
+  }
+
+  get status() {
+    return this.usuarioForm.get('status');
   }
 }

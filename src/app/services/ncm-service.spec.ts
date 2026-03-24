@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ClienteService } from './cliente-service';
+import { NcmService } from './ncm-service';
 
-describe('ClienteService', () => {
-  let service: ClienteService;
+describe('NcmService', () => {
+  let service: NcmService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ClienteService);
+    service = TestBed.inject(NcmService);
   });
 
   it('should be created', () => {

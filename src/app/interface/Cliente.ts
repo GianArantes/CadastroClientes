@@ -1,3 +1,6 @@
+
+
+export type status = 'ATIVO' | 'INATIVO';
 /**
  * ARQUIVO: Cliente.ts
  * DESCRIÇÃO: Interface que define a estrutura de um Cliente
@@ -104,4 +107,5 @@ export interface Cliente {
    * Validação: texto, máximo 20 caracteres
    */
   telefone: string;
+  status: status; // Exemplo: 'ATIVO', 'INATIVO'.
 }

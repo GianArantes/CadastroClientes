@@ -1,0 +1,52 @@
+h2 {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 2.2em;
+}
+
+.voltar {
+  display: block;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.voltar:hover {
+  text-decoration: underline;
+
+}
+
+.cnpj-busca-container {
+  width: 100%;
+  display: flex;
+  gap: 50px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cnpj-busca-container input {
+  width: 50%;
+}
+
+textarea {
+  resize: none;
+  /* Impede redimensionamento */
+  width: 100%;
+  /* Ocupa a largura total do container */
+}
+
+.ieFundacao {
+  display: flex;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  justify-content: space-between;
+}
+
+.ieFundacao input {
+  width: 100%;
+}
+
+.ieContainer, .aberturaContainer {
+  display: flex;
+  flex-direction: column;
+}
