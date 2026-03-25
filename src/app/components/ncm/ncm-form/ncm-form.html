@@ -1,1 +1,38 @@
-<p>ncm-form works!</p>
+<h2>{{ btnText() === 'Alterar' ? 'Editar NCM' : 'Novo NCM' }}</h2>
+<a class="voltar" href="javascript:void(0)" onclick="history.back()">Voltar</a>
+
+<form action="" (ngSubmit)="submit()" [formGroup]="ncmForm" #formDir="ngForm">
+  <div class="form-group">
+    <input type="hidden" formControlName="id">
+
+
+    <label for="codigo">Código</label>
+    <input type="text" id="codigo" name="codigo" formControlName="codigo" placeholder="Digite o código" required>
+    @if (codigo?.invalid && codigo?.touched) {
+    <div class="validation-error">
+      @if (codigo?.hasError('required')) {
+      <p>Código é obrigatório.</p>
+      }
+      @if (codigo?.hasError('serverError')) {
+      <p>{{ codigo?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+        <label for="descricao">Descrição</label>
+    <input type="text" id="descricao" name="descricao" formControlName="descricao" placeholder="Digite a descrição" required>
+    @if (descricao?.invalid && descricao?.touched) {
+    <div class="validation-error">
+      @if (descricao?.hasError('required')) {
+      <p>Descrição é obrigatória.</p>
+      }
+      @if (descricao?.hasError('serverError')) {
+      <p>{{ descricao?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+
+    <input type="submit" [value]="btnText()" [disabled]="isLoading()" class="btn btn-primary mt-3">
+  </div>
+</form>

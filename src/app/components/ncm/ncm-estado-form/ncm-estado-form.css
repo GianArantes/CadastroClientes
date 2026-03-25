@@ -1,0 +1,121 @@
+h2 {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 2.2em;
+}
+
+.voltar {
+  display: block;
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.voltar:hover {
+  text-decoration: underline;
+
+}
+
+.cnpj-busca-container {
+  width: 100%;
+  display: flex;
+  gap: 50px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cnpj-busca-container input {
+  width: 50%;
+}
+
+textarea {
+  resize: none;
+  /* Impede redimensionamento */
+  width: 100%;
+  /* Ocupa a largura total do container */
+}
+
+.ieFundacao {
+  display: flex;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  justify-content: space-between;
+}
+
+.ieFundacao input {
+  width: 100%;
+}
+
+.ieContainer, .aberturaContainer {
+  display: flex;
+  flex-direction: column;
+}
+h2 {
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 2.2em;
+}
+
+.tabela-container {
+  width: 100%;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilo para cabeçalho e células */
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+
+}
+
+/* Estilo apenas para o cabeçalho */
+table th {
+  background-color: #0018a3;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Efeito ao passar o mouse */
+table tr:hover {
+  background-color: #ddd;
+}
+
+.add {
+  display: block;
+  text-align: right;
+  margin-bottom: 10px;
+}
+.add:hover {
+  text-decoration: underline;
+
+}
+
+th.acoes, td.acoes {
+  width: 200px !important;
+  min-width: 200px !important;
+  justify-content: space-between;
+}
+
+td.acoes {
+  display: flex;
+  align-items: center;
+}
+
+.acoes button {
+  padding: 4px 4px;
+}

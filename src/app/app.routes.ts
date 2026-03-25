@@ -13,6 +13,7 @@ import { NcmComp } from './components/ncm/ncm-comp/ncm-comp';
 import { NcmForm } from './components/ncm/ncm-form/ncm-form';
 import { LitragemComp } from './components/litragem/litragem-comp/litragem-comp';
 import { LitragemForm } from './components/litragem/litragem-form/litragem-form';
+import { NcmEstadoForm } from './components/ncm/ncm-estado-form/ncm-estado-form';
 
 /**
  * ARQUIVO: app.routes.ts
@@ -110,7 +111,13 @@ export const routes: Routes = [
       { path: 'novo', component: LitragemForm },
       { path: ':id', component: LitragemForm }
     ]
+  },{
+    path: 'ncms-estados',
+    children: [
+      { path: ':id', component: NcmEstadoForm }
+    ]
   }
+
 
 
 

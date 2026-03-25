@@ -3,6 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ProdutoService } from '../../../services/produto-service';
+import { NcmService } from '../../../services/ncm-service';
+import { CategoriaService } from '../../../services/categoria-service';
+import { ProdutoLitragemService } from '../../../services/produto-litragem-service';
+import { ProdutoLitragem } from '../../../interface/ProdutoLitragem';
+import { Categoria } from '../../../interface/Categoria';
+import { Ncm } from '../../../interface/Ncm';
 
 
 @Component({
@@ -21,13 +27,24 @@ export class ProdutoForm implements OnInit {
   isLoading = signal(false);
   produtoForm!: FormGroup;
   mensagemErroGlobal = signal<string | null>(null);
+  ncms = signal<Ncm[]>([]);
+  categorias = signal<Categoria[]>([])
+  litragens = signal<ProdutoLitragem[]>([])
 
   constructor(private produtoService: ProdutoService,
+    private ncmService: NcmService,
+    private categoriaService: CategoriaService,
+    private produtoLitragemService: ProdutoLitragemService,
     private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
+    this.carregarNcms();
+    this.carregarCategorias();
+    this.carregarLitragens();
     this.inicializarFormulario();
+    this.verificarEdicao();
+
   }
 
   private inicializarFormulario(): void {
@@ -37,7 +54,12 @@ export class ProdutoForm implements OnInit {
       refNf: new FormControl('', [Validators.required]),
       ipi: new FormControl('', [Validators.required]),
       peso: new FormControl('', [Validators.required]),
-      qtdadePorEmbalagem: new FormControl('', [Validators.required])
+      qtdPorEmbalagem: new FormControl('', [Validators.required]),
+      categoriaId: new FormControl('', [Validators.required]),
+      ncmId: new FormControl('', [Validators.required]),
+      litragemId: new FormControl('', [Validators.required])
+
+
     });
   }
   private verificarEdicao(): void {
@@ -59,7 +81,14 @@ export class ProdutoForm implements OnInit {
     this.isLoading.set(true);
     this.produtoService.getProduto(id).subscribe({
       next: (produto) => {
-        this.produtoForm.patchValue(produto);
+        this.produtoForm.patchValue({
+          ...produto, // Preenche os campos simples (nome, peso, etc)
+
+          // Mapeia manualmente os objetos para os IDs do formulário
+          categoriaId: produto.categoria?.id,
+          litragemId: produto.litragem?.id,
+          ncmId: produto.ncm?.id
+        });
         this.isLoading.set(false);
         console.log('Produto carregado:', produto);
       },
@@ -74,7 +103,51 @@ export class ProdutoForm implements OnInit {
     });
   }
 
+  private carregarNcms(): void {
+    this.ncmService.listarNcms().subscribe({
+      next: (dados) => {
+        // Sucesso: dados chegaram
+        this.ncms.set(dados);
+        console.log('NCMs carregados:', dados); // Debug
+      },
+      error: (err) => {
+        // Erro: algo deu errado
+        console.error('Erro ao carregar NCMs:', err);
+      }
+    });
+  }
+
+  private carregarCategorias(): void {
+    this.categoriaService.listarCategorias().subscribe({
+      next: (dados) => {
+        this.categorias.set(dados);
+        // Sucesso: dados chegaram
+        console.log('Categorias carregadas:', dados); // Debug
+      },
+      error: (err) => {
+        // Erro: algo deu errado
+        console.error('Erro ao carregar Categorias:', err);
+      }
+    });
+  }
+
+  private carregarLitragens(): void {
+    this.produtoLitragemService.listarLitragens().subscribe({
+      next: (dados) => {
+        this.litragens.set(dados);
+        // Sucesso: dados chegaram
+        console.log('Litragens carregadas:', dados); // Debug
+      },
+      error: (err) => {
+        // Erro: algo deu errado
+        console.error('Erro ao carregar Litragens:', err);
+      }
+    });
+  }
+
+
   submit(): void {
+    console.log('Payload para o Java:', this.produtoForm.value);
     this.formSubmitted.set(true);
     if (!this.produtoForm.valid) {
       this.camposPreenchidos.set(false);
@@ -83,8 +156,6 @@ export class ProdutoForm implements OnInit {
       return;
     }
 
-    const aberturaValue = this.produtoForm.get('abertura')?.value;
-    console.log('Valor bruto do campo abertura:', aberturaValue, 'Tipo:', typeof aberturaValue);
 
     const dadosParaEnviar = this.produtoForm.value;
 
@@ -125,6 +196,12 @@ export class ProdutoForm implements OnInit {
     });
   }
 
+
+
+
+
+
+
   private getFormValidationErrors(): any {
     const result: any = {};
     Object.keys(this.produtoForm.controls).forEach(key => {
@@ -136,7 +213,7 @@ export class ProdutoForm implements OnInit {
     return result;
   }
 
-   get nome() {
+  get nome() {
     return this.produtoForm.get('nome');
   }
 
@@ -151,7 +228,7 @@ export class ProdutoForm implements OnInit {
     return this.produtoForm.get('peso');
   }
 
-  get qtdadePorEmbalagem() {
-    return this.produtoForm.get('qtdadePorEmbalagem');
+  get qtdPorEmbalagem() {
+    return this.produtoForm.get('qtdPorEmbalagem');
   }
 }

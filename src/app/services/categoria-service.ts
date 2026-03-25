@@ -9,7 +9,7 @@ import { Categoria } from '../interface/Categoria';
 })
 export class CategoriaService {
   private baseApiUrl = environment.baseApiUrl;
-  private apiUrl = `${this.baseApiUrl}/produto-categoria`;
+  private apiUrl = `${this.baseApiUrl}/categorias`;
 
   constructor(private http: HttpClient) {}
 

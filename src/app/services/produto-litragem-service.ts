@@ -20,7 +20,7 @@ export class ProdutoLitragemService {
   }
 
   //busca litragem por id
-  getProduto(id: string): Observable<ProdutoLitragem> {
+  getLitragem(id: string): Observable<ProdutoLitragem> {
     return this.http.get<ProdutoLitragem>(`${this.apiUrl}/${id}`);
   }
 
@@ -35,7 +35,7 @@ export class ProdutoLitragemService {
   }
 
   //deleta litragem
-  removeProduto(id: string): Observable<void> {
+  removeLitragem(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

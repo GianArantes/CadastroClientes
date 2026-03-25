@@ -10,16 +10,16 @@
     <li>
       <a routerLink="/cliente">Cliente</a>
     </li>
-    <li>
-      <a routerLink="/usuario">Usuário</a>
-    </li>
-    <li>
-      <table>
-      <tr><a routerLink="/produtos">Produtos</a></tr>
-      <tr><a routerLink="/ncms">NCMs</a></tr>
-      <tr><a routerLink="/litragem">Litragem</a></tr>
-      <tr><a routerLink="/categorias">Categorias</a></tr>
-      </table>
+
+    <li class="dropdown">
+      <a>Administração</a>
+      <ul class="dropdown-menu">
+        <li><a routerLink="/usuario">Usuário</a></li>
+        <li><a routerLink="/produtos">Produtos</a></li>
+        <li><a routerLink="/ncms">NCMs</a></li>
+        <li><a routerLink="/litragem">Litragem</a></li>
+        <li><a routerLink="/categorias">Categorias</a></li>
+      </ul>
     </li>
     <li>
       <a routerLink="/about">Sobre</a>

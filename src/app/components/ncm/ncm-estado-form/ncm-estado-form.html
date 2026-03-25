@@ -1,0 +1,51 @@
+<h2>NCM {{ ncm().codigo }} - {{ ncm().descricao }}</h2>
+
+<a class="voltar" href="javascript:void(0)" onclick="history.back()">Voltar</a>
+
+<!-- Tabela de estados -->
+<div class="tabela-container">
+  <form [formGroup]="ncmEstadoForm">
+    <table>
+      <thead>
+        <tr>
+          <th>Estado</th>
+          <th>Alíquota</th>
+          <th class="acoes">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linha do formulário -->
+        <tr>
+          <td>
+            <input type="text" id="estado" formControlName="estado" placeholder="Ex: SP">
+          </td>
+          <td>
+            <input type="number" id="aliquota" formControlName="aliquota" placeholder="Ex: 12">
+          </td>
+          <td class="acoes">
+            <button type="button" [disabled]="!ncmEstadoForm.valid" (click)="ncmEstadoForm.value.id ? alterar() : cadastrar()">{{ ncmEstadoForm.value.id ? 'Alterar' : 'Adicionar' }}</button>
+            <button type="button" (click)="ncmEstadoForm.reset()">Cancelar</button>
+          </td>
+        </tr>
+
+        @for (estado of ncmListaEstado(); track estado.id) {
+        <tr>
+          <td>{{ estado.estado }}</td>
+          <td>{{ estado.aliquota | number:'1.2-2'}}%</td>
+          <td class="acoes">
+            <button type="button" (click)="editarEstado(estado)">Editar</button>
+            <button type="button" (click)="excluirEstado(estado.id)" style="color: red;">Excluir</button>
+          </td>
+        </tr>
+        }
+        @empty {
+        <tr>
+          <td colspan="3" style="text-align: center;">
+            Nenhum estado encontrado para este NCM.
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </form>
+</div>

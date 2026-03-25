@@ -1,1 +1,25 @@
-<p>categoria-form works!</p>
+<h2>{{ btnText() === 'Alterar' ? 'Editar categoria' : 'Nova categoria' }}</h2>
+<a class="voltar" href="javascript:void(0)" onclick="history.back()">Voltar</a>
+
+<form action="" (ngSubmit)="submit()" [formGroup]="categoriaForm" #formDir="ngForm">
+  <div class="form-group">
+    <input type="hidden" formControlName="id">
+
+
+    <label for="nome">Nome</label>
+    <input type="text" id="nome" name="nome" formControlName="nome" placeholder="Digite o nome" required>
+    @if (nome?.invalid && nome?.touched) {
+    <div class="validation-error">
+      @if (nome?.hasError('required')) {
+      <p>Nome é obrigatório.</p>
+      }
+      @if (nome?.hasError('serverError')) {
+      <p>{{ nome?.getError('serverError') }}</p>
+      }
+    </div>
+    }
+
+
+    <input type="submit" [value]="btnText()" [disabled]="isLoading()" class="btn btn-primary mt-3">
+  </div>
+</form>

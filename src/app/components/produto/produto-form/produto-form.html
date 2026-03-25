@@ -21,7 +21,7 @@
 
 
     <label for="refNf">Referência da Nota Fiscal</label>
-    <input type="text" id="refNf" name="refNf" formControlName="refNf" placeholder="Digite a referência" required>
+    <input type="number" id="refNf" name="refNf" formControlName="refNf" placeholder="Digite a referência" required>
     @if (refNf?.invalid && refNf?.touched) {
     <div class="validation-error">
       @if (refNf?.hasError('required')) {
@@ -35,7 +35,7 @@
 
 
     <label for="ipi">IPI</label>
-    <input type="text" id="ipi" name="ipi" formControlName="ipi" placeholder="Digite o IPI" required>
+    <input type="number" id="ipi" name="ipi" formControlName="ipi" placeholder="Digite o IPI" required>
     @if (ipi?.invalid && ipi?.touched) {
     <div class="validation-error">
       @if (ipi?.hasError('required')) {
@@ -48,7 +48,7 @@
     }
 
     <label for="peso">Peso</label>
-    <input type="text" id="peso" name="peso" formControlName="peso" placeholder="Digite o peso" required>
+    <input type="number" id="peso" name="peso" formControlName="peso" placeholder="Digite o peso" required>
     @if (peso?.invalid && peso?.touched) {
     <div class="validation-error">
       @if (peso?.hasError('required')) {
@@ -60,19 +60,63 @@
     </div>
     }
 
-    <label for="qtdadePorEmbalagem">Quantidade por Embalagem</label>
-    <input type="text" id="qtdadePorEmbalagem" name="qtdadePorEmbalagem" formControlName="qtdadePorEmbalagem" placeholder="Digite a quantidade por embalagem" required>
-    @if (qtdadePorEmbalagem?.invalid && qtdadePorEmbalagem?.touched) {
+    <label for="qtdPorEmbalagem">Quantidade por Embalagem</label>
+    <input type="number" id="qtdPorEmbalagem" name="qtdPorEmbalagem" formControlName="qtdPorEmbalagem"
+      placeholder="Digite a quantidade por embalagem" required>
+    @if (qtdPorEmbalagem?.invalid && qtdPorEmbalagem?.touched) {
     <div class="validation-error">
-      @if (qtdadePorEmbalagem?.hasError('required')) {
+      @if (qtdPorEmbalagem?.hasError('required')) {
       <p>Quantidade por Embalagem é obrigatória.</p>
       }
-      @if (qtdadePorEmbalagem?.hasError('serverError')) {
-      <p>{{ qtdadePorEmbalagem?.getError('serverError') }}</p>
+      @if (qtdPorEmbalagem?.hasError('serverError')) {
+      <p>{{ qtdPorEmbalagem?.getError('serverError') }}</p>
       }
     </div>
     }
 
-    <input type="submit" [value]="btnText()" [disabled]="isLoading()" class="btn btn-primary mt-3">
+    <label>Categoria:</label>
+    <select formControlName="categoriaId">
+      <option value="">Selecione uma categoria</option>
+
+      <!-- Iterando sobre o seu Signal de categorias -->
+      @for (cat of categorias(); track cat.id) {
+      <option [value]="cat.id">{{ cat.nome }}</option>
+      }
+      @empty {
+      <option value="" disabled selected>Nenhuma categoria cadastrada</option>
+      }
+
+    </select>
+
+    <label>NCMs:</label>
+    <select formControlName="ncmId">
+      <option value="">Selecione um NCM</option>
+
+      <!-- Iterando sobre o seu Signal de NCMs -->
+      @for (ncm of ncms(); track ncm.id) {
+      <option [value]="ncm.id">{{ ncm.codigo }}</option>
+      }
+      @empty {
+      <option value="" disabled selected>Nenhum NCM cadastrado</option>
+      }
+
+    </select>
+
+    <label>Litragem:</label>
+    <select formControlName="litragemId">
+      <option value="">Selecione uma litragem</option>
+
+      <!-- Iterando sobre o seu Signal de litragens -->
+      @for (lit of litragens(); track lit.id) {
+      <option [value]="lit.id">{{ lit.nome }}</option>
+      }
+      @empty {
+      <option value="" disabled selected>Nenhuma litragem cadastrada</option>
+      }
+
+
+
+    </select>
+      <input type="submit" [value]="btnText()" [disabled]="isLoading()" class="btn btn-primary mt-3">
   </div>
 </form>
